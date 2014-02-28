@@ -8,4 +8,7 @@ use:
 - once clicked, the plugin will calculate the readability index with the 'Gulpease' formula, specific for italian language:
   http://xoomer.virgilio.it/roberto-ricci/variabilialeatorie/esperimenti/leggibilita.htm
 
+screenshot:
+![screenshot](https://raw.github.com/ilmanzo/gedit-plugin-gulpease/branch/img/screenshot.png)
+
 
