@@ -1,0 +1,11 @@
+#put this file in $HOME/.local/share/gedit/plugins
+[Plugin]
+Loader=python3
+Module=leggibilita
+IAge=3
+Name=indice leggibilita
+Description=calcola indice leggibilità
+Authors=Andrea Manzini
+Copyright=Copyright © 2014 Andrea Manzini
+Website=http://ilmanzo.github.io
+Version=3.0.0
