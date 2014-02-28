@@ -9,6 +9,7 @@ use:
   http://xoomer.virgilio.it/roberto-ricci/variabilialeatorie/esperimenti/leggibilita.htm
 
 screenshot:
-![screenshot](https://raw.github.com/ilmanzo/gedit-plugin-gulpease/master/img/screenshot.png)
+
+  ![screenshot](https://raw.github.com/ilmanzo/gedit-plugin-gulpease/master/img/screenshot.png)
 
 
