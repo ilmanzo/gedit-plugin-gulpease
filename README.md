@@ -3,6 +3,7 @@ GEdit Plugin to calculate readability index
 
 *news*: 
   updated for gedit 3.12+
+  I left the previous version for legacy reasons
 
 
 use: 
