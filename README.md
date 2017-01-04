@@ -1,6 +1,10 @@
 GEdit Plugin to calculate readability index
 ===========================================
 
+*news*: 
+  updated for gedit 3.12+
+
+
 use: 
 - copy the .plugin and the .py file into $HOME/.local/share/gedit/plugins/
 - load the plugin via the "preferences" menu

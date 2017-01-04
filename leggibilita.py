@@ -1,15 +1,23 @@
 #put this in $HOME/.local/share/gedit/plugins
-from gi.repository import GObject, Gtk, Gedit
+from gi.repository import GObject, Gtk, Gedit, Gio
 
-UI_XML = """<ui> <menubar name="MenuBar">
-    <menu name="ToolsMenu" action="Tools">
-      <placeholder name="ToolsOps_3">
-        <menuitem name="Leggibilita" action="Leggibilita"/>
-      </placeholder>
-    </menu>
-</menubar> </ui>"""
+#UI_XML = """<ui> <menubar name="MenuBar">
+#    <menu name="ToolsMenu" action="Tools">
+#      <placeholder name="ToolsOps_3">
+#        <menuitem name="Leggibilita" action="Leggibilita"/>
+#      </placeholder>
+#    </menu>
+#</menubar> </ui>"""
 
-class Leggibilita(GObject.Object, Gedit.WindowActivatable):
+try:
+    gettext.bindtextdomain(GETTEXT_PACKAGE, GP_LOCALEDIR)
+    _ = lambda s: gettext.dgettext(GETTEXT_PACKAGE, s);
+except:
+    _ = lambda s: s
+
+
+
+class LeggibilitaWindow(GObject.Object, Gedit.WindowActivatable):
     __gtype_name__ = "Leggibilita"
     window = GObject.property(type=Gedit.Window)
 
@@ -17,20 +25,24 @@ class Leggibilita(GObject.Object, Gedit.WindowActivatable):
         GObject.Object.__init__(self)
     
     def _add_ui(self):
-        manager = self.window.get_ui_manager()
-        self._actions = Gtk.ActionGroup(name="LeggibilitaActions")
-        self._actions.add_actions([
-          ('Leggibilita', Gtk.STOCK_INFO, "Indice Leggibilita",None, "Calcola indice leggibilita",self.on_action_activate),
-        ])
-        manager.insert_action_group(self._actions)
-        self._ui_merge_id = manager.add_ui_from_string(UI_XML)
-        manager.ensure_update()
+        #manager = self.window.get_ui_manager()
+        #self._actions = Gtk.ActionGroup(name="LeggibilitaActions")
+        #self._actions.add_actions([
+        #  ('Leggibilita', Gtk.STOCK_INFO, "Indice Leggibilita",None, "Calcola indice leggibilita",self.on_action_activate),
+        #])
+        #manager.insert_action_group(self._actions)
+        #self._ui_merge_id = manager.add_ui_from_string(UI_XML)
+        #manager.ensure_update()
+        action = Gio.SimpleAction(name="leggibilita")
+        action.connect('activate', self.on_action_activate)
+        self.window.add_action(action)
         
     def do_activate(self):
         self._add_ui()
 
     def do_deactivate(self):
-        self._remove_ui()
+        #self._remove_ui()
+        self.window.remove_action("leggibilita")
 
     def do_update_state(self):
         pass
@@ -38,6 +50,8 @@ class Leggibilita(GObject.Object, Gedit.WindowActivatable):
     def leggibilita(self,testo):
         frasi = testo.count('.') + testo.count('?') + testo.count('!') + testo.count('.') + testo.count(':') + testo.count(';')
         parole = len(testo.split())
+        if parole==0:
+        	return "N/A"
         lettere=len(testo)-parole
         lp=(100.0*lettere)/parole
         fr=(100.0*frasi)/parole
@@ -61,3 +75,20 @@ class Leggibilita(GObject.Object, Gedit.WindowActivatable):
         manager.remove_ui(self._ui_merge_id)
         manager.remove_action_group(self._actions)
         manager.ensure_update()
+
+class LeggibilitaApp(GObject.Object, Gedit.AppActivatable):
+	app = GObject.Property(type=Gedit.App)
+	def __init__(self):
+		GObject.Object.__init__(self)
+
+	def do_activate(self):
+		self.app.add_accelerator("<Primary><Alt>L", "win.leggibilita", None)
+		self.menu_ext = self.extend_menu("tools-section")
+		item = Gio.MenuItem.new(_("Leggibilita"), "win.leggibilita")
+		self.menu_ext.append_menu_item(item)
+
+	def do_deactivate(self):
+		self.app.remove_accelerator("win.leggibilita", None)
+		self.menu_ext = None
+
+# ex:ts=4:et:
